@@ -15,27 +15,27 @@ export interface BasicInfo {
 
 export interface BusinessOperations {
   customerManagement: {
-    infoManagement: 'spreadsheet' | 'crm' | 'paper' | 'none';
-    proposalCreation: 'manual' | 'template' | 'automated';
-    followUp: 'manual' | 'scheduled' | 'none';
-    recordManagement: 'spreadsheet' | 'crm' | 'paper';
+    infoManagement: 'spreadsheet' | 'crm' | 'paper' | 'none' | '';
+    proposalCreation: 'manual' | 'template' | 'automated' | '';
+    followUp: 'manual' | 'scheduled' | 'none' | '';
+    recordManagement: 'spreadsheet' | 'crm' | 'paper' | '';
   };
   accounting: {
-    invoicing: 'manual' | 'accounting_software' | 'automated';
-    expenseProcessing: 'manual' | 'app' | 'automated';
-    salesAggregation: 'manual' | 'spreadsheet' | 'automated';
-    taxDocuments: 'manual' | 'tax_software' | 'outsourced';
+    invoicing: 'manual' | 'accounting_software' | 'automated' | '';
+    expenseProcessing: 'manual' | 'app' | 'automated' | '';
+    salesAggregation: 'manual' | 'spreadsheet' | 'automated' | '';
+    taxDocuments: 'manual' | 'tax_software' | 'outsourced' | '';
   };
   marketing: {
-    socialMedia: 'manual' | 'scheduled' | 'none';
-    advertising: 'manual' | 'platform_managed' | 'none';
-    customerEmails: 'manual' | 'email_service' | 'none';
-    websiteUpdates: 'manual' | 'cms' | 'none';
+    socialMedia: 'manual' | 'scheduled' | 'none' | '';
+    advertising: 'manual' | 'platform_managed' | 'none' | '';
+    customerEmails: 'manual' | 'email_service' | 'none' | '';
+    websiteUpdates: 'manual' | 'cms' | 'none' | '';
   };
   inventory?: {
-    stockManagement: 'manual' | 'spreadsheet' | 'system';
-    productData: 'manual' | 'spreadsheet' | 'database';
-    pricing: 'manual' | 'rule_based' | 'dynamic';
+    stockManagement: 'manual' | 'spreadsheet' | 'system' | '';
+    productData: 'manual' | 'spreadsheet' | 'database' | '';
+    pricing: 'manual' | 'rule_based' | 'dynamic' | '';
   };
 }
 

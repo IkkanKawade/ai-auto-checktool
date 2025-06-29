@@ -48,7 +48,7 @@ function calculateBaseScore(operations: FormData['operations']): number {
       const categoryScores = operationScores[category as keyof typeof operationScores];
       Object.entries(items).forEach(([item, value]) => {
         if (item in categoryScores && value) {
-          const itemScores = categoryScores[item as keyof typeof categoryScores] as any;
+          const itemScores = categoryScores[item as keyof typeof categoryScores] as Record<string, number>;
           if (itemScores && typeof value === 'string' && value in itemScores) {
             totalScore += itemScores[value];
             totalCategories++;

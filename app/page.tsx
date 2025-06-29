@@ -6,7 +6,7 @@ import BasicInfoForm from '@/components/forms/BasicInfoForm';
 import OperationsForm from '@/components/forms/OperationsForm';
 import ChallengesForm from '@/components/forms/ChallengesForm';
 import DiagnosisResultComponent from '@/components/DiagnosisResult';
-import { FormData, BasicInfo, BusinessOperations, BusinessChallenges, DiagnosisResult } from '@/types';
+import { FormData, BasicInfo, BusinessOperations, BusinessChallenges, DiagnosisResult, BusinessType, EmployeeRange, RevenueRange, RevenueSource } from '@/types';
 import { calculateDiagnosis } from '@/lib/scoring';
 
 const stepTitles = ['基本情報', '業務実態', '課題分析', '診断結果'];
@@ -15,29 +15,29 @@ export default function Home() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>({
     basicInfo: {
-      businessType: '' as any,
-      employeeRange: '' as any,
-      revenueRange: '' as any,
-      revenueSource: '' as any
+      businessType: '' as BusinessType,
+      employeeRange: '' as EmployeeRange,
+      revenueRange: '' as RevenueRange,
+      revenueSource: '' as RevenueSource
     },
     operations: {
       customerManagement: {
-        infoManagement: '' as any,
-        proposalCreation: '' as any,
-        followUp: '' as any,
-        recordManagement: '' as any
+        infoManagement: '',
+        proposalCreation: '',
+        followUp: '',
+        recordManagement: ''
       },
       accounting: {
-        invoicing: '' as any,
-        expenseProcessing: '' as any,
-        salesAggregation: '' as any,
-        taxDocuments: '' as any
+        invoicing: '',
+        expenseProcessing: '',
+        salesAggregation: '',
+        taxDocuments: ''
       },
       marketing: {
-        socialMedia: '' as any,
-        advertising: '' as any,
-        customerEmails: '' as any,
-        websiteUpdates: '' as any
+        socialMedia: '',
+        advertising: '',
+        customerEmails: '',
+        websiteUpdates: ''
       }
     },
     challenges: {
@@ -83,29 +83,29 @@ export default function Home() {
     setCurrentStep(0);
     setFormData({
       basicInfo: {
-        businessType: '' as any,
-        employeeRange: '' as any,
-        revenueRange: '' as any,
-        revenueSource: '' as any
+        businessType: '' as BusinessType,
+        employeeRange: '' as EmployeeRange,
+        revenueRange: '' as RevenueRange,
+        revenueSource: '' as RevenueSource
       },
       operations: {
         customerManagement: {
-          infoManagement: '' as any,
-          proposalCreation: '' as any,
-          followUp: '' as any,
-          recordManagement: '' as any
+          infoManagement: '',
+          proposalCreation: '',
+          followUp: '',
+          recordManagement: ''
         },
         accounting: {
-          invoicing: '' as any,
-          expenseProcessing: '' as any,
-          salesAggregation: '' as any,
-          taxDocuments: '' as any
+          invoicing: '',
+          expenseProcessing: '',
+          salesAggregation: '',
+          taxDocuments: ''
         },
         marketing: {
-          socialMedia: '' as any,
-          advertising: '' as any,
-          customerEmails: '' as any,
-          websiteUpdates: '' as any
+          socialMedia: '',
+          advertising: '',
+          customerEmails: '',
+          websiteUpdates: ''
         }
       },
       challenges: {
