@@ -1,103 +1,179 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import StepIndicator from '@/components/StepIndicator';
+import BasicInfoForm from '@/components/forms/BasicInfoForm';
+import OperationsForm from '@/components/forms/OperationsForm';
+import ChallengesForm from '@/components/forms/ChallengesForm';
+import DiagnosisResultComponent from '@/components/DiagnosisResult';
+import { FormData, BasicInfo, BusinessOperations, BusinessChallenges, DiagnosisResult } from '@/types';
+import { calculateDiagnosis } from '@/lib/scoring';
+
+const stepTitles = ['基本情報', '業務実態', '課題分析', '診断結果'];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentStep, setCurrentStep] = useState(0);
+  const [formData, setFormData] = useState<FormData>({
+    basicInfo: {
+      businessType: '' as any,
+      employeeRange: '' as any,
+      revenueRange: '' as any,
+      revenueSource: '' as any
+    },
+    operations: {
+      customerManagement: {
+        infoManagement: '' as any,
+        proposalCreation: '' as any,
+        followUp: '' as any,
+        recordManagement: '' as any
+      },
+      accounting: {
+        invoicing: '' as any,
+        expenseProcessing: '' as any,
+        salesAggregation: '' as any,
+        taxDocuments: '' as any
+      },
+      marketing: {
+        socialMedia: '' as any,
+        advertising: '' as any,
+        customerEmails: '' as any,
+        websiteUpdates: '' as any
+      }
+    },
+    challenges: {
+      timeConsumingTasks: [],
+      overtimeAreas: [],
+      errorProneAreas: [],
+      dependentProcesses: []
+    }
+  });
+  const [diagnosisResult, setDiagnosisResult] = useState<DiagnosisResult | null>(null);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const showInventory = formData.basicInfo.businessType === 'ec' || 
+                       formData.basicInfo.businessType === 'retail' || 
+                       formData.basicInfo.businessType === 'manufacturing';
+
+  const handleBasicInfoChange = (data: BasicInfo) => {
+    setFormData({ ...formData, basicInfo: data });
+  };
+
+  const handleOperationsChange = (data: BusinessOperations) => {
+    setFormData({ ...formData, operations: data });
+  };
+
+  const handleChallengesChange = (data: BusinessChallenges) => {
+    setFormData({ ...formData, challenges: data });
+  };
+
+  const handleNext = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handleBack = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleSubmit = () => {
+    const result = calculateDiagnosis(formData);
+    setDiagnosisResult(result);
+    setCurrentStep(3);
+  };
+
+  const handleReset = () => {
+    setCurrentStep(0);
+    setFormData({
+      basicInfo: {
+        businessType: '' as any,
+        employeeRange: '' as any,
+        revenueRange: '' as any,
+        revenueSource: '' as any
+      },
+      operations: {
+        customerManagement: {
+          infoManagement: '' as any,
+          proposalCreation: '' as any,
+          followUp: '' as any,
+          recordManagement: '' as any
+        },
+        accounting: {
+          invoicing: '' as any,
+          expenseProcessing: '' as any,
+          salesAggregation: '' as any,
+          taxDocuments: '' as any
+        },
+        marketing: {
+          socialMedia: '' as any,
+          advertising: '' as any,
+          customerEmails: '' as any,
+          websiteUpdates: '' as any
+        }
+      },
+      challenges: {
+        timeConsumingTasks: [],
+        overtimeAreas: [],
+        errorProneAreas: [],
+        dependentProcesses: []
+      }
+    });
+    setDiagnosisResult(null);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <h1 className="text-3xl font-bold text-gray-900">
+            小規模事業者向けAI業務自動化診断ツール
+          </h1>
+          <p className="mt-2 text-gray-600">
+            あなたのビジネスに最適なAI活用方法を診断します
+          </p>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <StepIndicator 
+          currentStep={currentStep} 
+          totalSteps={4} 
+          stepTitles={stepTitles}
+        />
+
+        <div className="bg-white rounded-lg shadow-md p-8 mt-8">
+          {currentStep === 0 && (
+            <BasicInfoForm
+              data={formData.basicInfo}
+              onChange={handleBasicInfoChange}
+              onNext={handleNext}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          )}
+
+          {currentStep === 1 && (
+            <OperationsForm
+              data={formData.operations}
+              onChange={handleOperationsChange}
+              onNext={handleNext}
+              onBack={handleBack}
+              showInventory={showInventory}
+            />
+          )}
+
+          {currentStep === 2 && (
+            <ChallengesForm
+              data={formData.challenges}
+              onChange={handleChallengesChange}
+              onSubmit={handleSubmit}
+              onBack={handleBack}
+            />
+          )}
+
+          {currentStep === 3 && diagnosisResult && (
+            <DiagnosisResultComponent
+              result={diagnosisResult}
+              onReset={handleReset}
+            />
+          )}
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
